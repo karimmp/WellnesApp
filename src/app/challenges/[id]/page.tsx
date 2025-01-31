@@ -13,6 +13,7 @@ export default function ChallengePage() {
   const progress = 65;
 
   useEffect(() => {
+    // Datos de ejemplo
     const mockChallenges: Record<string, Challenge> = {
       '1': {
         id: '1',
@@ -38,7 +39,7 @@ export default function ChallengePage() {
     setChallenge(mockChallenges[id] || null);
   }, [params.id]);
 
-  if (!challenge) return null;
+  if (!challenge) return <div>Cargando...</div>; // Manejo de carga si el reto no está disponible
 
   const getTypeStyles = (type: string) => {
     switch(type) {

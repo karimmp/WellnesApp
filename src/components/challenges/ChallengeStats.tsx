@@ -1,5 +1,5 @@
 import React from 'react';
-import { Challenge, ChallengeType } from '@/types';
+import { Challenge } from '@/types';
 import { Brain, Heart, Activity } from 'lucide-react';
 
 interface StatsProps {

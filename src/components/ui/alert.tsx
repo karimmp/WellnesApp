@@ -1,4 +1,4 @@
-"use client";
+/*"use client";
 
 import * as React from "react";
 
@@ -26,4 +26,4 @@ export const AlertDescription = React.forwardRef<HTMLParagraphElement, AlertDesc
     />
   )
 );
-AlertDescription.displayName = "AlertDescription";
+AlertDescription.displayName = "AlertDescription";*/

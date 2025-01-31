@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { User, Shield, MoreVertical } from 'lucide-react';
+import { User, MoreVertical } from 'lucide-react';
 
 interface UserData {
   id: string;
