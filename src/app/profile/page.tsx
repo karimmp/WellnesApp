@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Trophy, Medal, Crown, Shield, Brain, Heart, Activity, UserPlus, Users } from 'lucide-react';
+import { Trophy, Medal, UserPlus } from 'lucide-react';
 
 export default function Profile() {
   return (
@@ -148,3 +148,21 @@ export default function Profile() {
     </div>
   );
 }
+
+/*
+Asi es más dinamico para tener los componentes separados
+
+"use client";
+import Leaderboard from '@/components/leaderboard/Leaderboard';
+import LevelBadges from '@/components/badges/LevelBadges';
+import PointsHistory from '@/components/points/PointsHistory';
+
+export default function Profile() {
+    return (
+      <div className="p-4">
+        <Leaderboard />
+        <LevelBadges />
+        <PointsHistory />
+      </div>
+    );
+  }*/
