@@ -4,31 +4,12 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Plus, Calendar, Users } from 'lucide-react';
 import { Challenge, ChallengeType } from '@/types';
-
-const MOCK_CHALLENGES: Challenge[] = [
-  {
-    id: '1',
-    title: 'Meditación Diaria',
-    type: 'mind',
-    description: '10 minutos de meditación por 7 días',
-    participants: ['user1', 'user2'],
-    startDate: new Date().toISOString().split('T')[0],
-    endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-  },
-  {
-    id: '2',
-    title: 'Ejercicio Matutino',
-    type: 'body',
-    description: '30 minutos de ejercicio al despertar',
-    participants: ['user1', 'user2', 'user3'],
-    startDate: new Date().toISOString().split('T')[0],
-    endDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-  }
-];
+import { useMockData } from '@/hooks/useMockData';
 
 export default function ChallengeList() {
+  const { challenges } = useMockData();
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [challenges] = useState<Challenge[]>(MOCK_CHALLENGES);
+  const [challengesList] = useState<Challenge[]>(Object.values(challenges));
 
   const getTypeStyles = (type: ChallengeType) => {
     switch(type) {
@@ -56,7 +37,7 @@ export default function ChallengeList() {
         </div>
 
         <div className="space-y-4">
-          {challenges.map((challenge) => (
+          {challengesList.map((challenge) => (
             <div
               key={challenge.id}
               className={`${getTypeStyles(challenge.type)} rounded-xl p-6 transition-all duration-200 border border-gray-800/50`}

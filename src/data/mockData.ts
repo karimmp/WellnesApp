@@ -1,10 +1,27 @@
 // src/data/mockData.ts
+interface ModuleActivity {
+  id: string;
+  title: string;
+  description: string;
+  points: number;
+  duration: number; // en minutos
+  type: 'mind' | 'body' | 'spirit';
+}
+
+
+
 export interface MockData {
     users: User[];
     challenges: Record<string, Challenge>;
     activities: Activity[];
     stats: Stats;
+    moduleActivities: {
+      mind: ModuleActivity[];
+      body: ModuleActivity[];
+      spirit: ModuleActivity[];
+    };
   }
+  
 
   export interface User {
     id: string;
@@ -81,5 +98,54 @@ export interface MockData {
           "Feb": { mind: 50, body: 35, spirit: 30 },
           "Mar": { mind: 55, body: 40, spirit: 35 }
         }
+      },
+      moduleActivities: {
+        mind: [
+          {
+            id: '1',
+            title: 'Meditación',
+            description: 'Actividad base',
+            points: 100,
+            duration: 30,
+            type: 'mind'
+          },
+          {
+            id: '2',
+            title: 'Clase de Yoga',
+            description: 'Actividad base',
+            points: 200,
+            duration: 30,
+            type: 'mind'
+          },
+          {
+            id: '3',
+            title: 'Leer',
+            description: 'Actividad base',
+            points: 100,
+            duration: 15,
+            type: 'mind'
+          },
+          // Más actividades...
+        ],
+        body: [
+          {
+            id: '1',
+            title: 'Ejercicio',
+            description: 'Actividad base',
+            points: 100,
+            duration: 30,
+            type: 'body'
+          }
+        ],
+        spirit: [
+          {
+            id: '1',
+            title: 'Voluntariado',
+            description: 'Actividad base',
+            points: 100,
+            duration: 30,
+            type: 'spirit'
+          }
+        ]
       }
   };

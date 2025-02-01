@@ -3,26 +3,19 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { Activity, Brain, Heart, Calendar, Users, Trophy, ArrowUp } from 'lucide-react';
-//import { mockData } from '@/data/mockData';
-
-const mockData = {
-  activityData: [
-    { month: 'Ene', mente: 45, cuerpo: 30, espiritu: 50 },
-    { month: 'Feb', mente: 50, cuerpo: 35, espiritu: 30 },
-    { month: 'Mar', mente: 55, cuerpo: 40, espiritu: 35 },
-    { month: 'Abr', mente: 30, cuerpo: 25, espiritu: 20 },
-    { month: 'May', mente: 60, cuerpo: 50, espiritu: 40 },
-    { month: 'Jun', mente: 20, cuerpo: 10, espiritu: 25 }
-  ],
-  stats: {
-    users: 150,
-    activeUsers: 89,
-    completed: 234,
-    ongoing: 45
-  }
-};
+import { useMockData } from '@/hooks/useMockData';
 
 export default function GlobalDashboard() {
+  const { stats } = useMockData();
+  
+  // Transformar los datos para el gráfico
+  const chartData = Object.keys(stats.activeParticipation).map(month => ({
+    month,
+    mente: stats.activeParticipation[month].mind,
+    cuerpo: stats.activeParticipation[month].body,
+    espiritu: stats.activeParticipation[month].spirit
+  }));
+
   return (
     <div className="min-h-screen bg-background-dark p-6">
       <div className="max-w-7xl mx-auto">
@@ -42,7 +35,7 @@ export default function GlobalDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-blue-200">Total Usuarios</p>
-                <h3 className="text-3xl font-bold text-white mt-1">{mockData.stats.users}</h3>
+                <h3 className="text-3xl font-bold text-white mt-1">{stats.users}</h3>
               </div>
               <Users className="w-8 h-8 text-blue-200" />
             </div>
@@ -52,7 +45,9 @@ export default function GlobalDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-green-200">Usuarios Activos</p>
-                <h3 className="text-3xl font-bold text-white mt-1">{mockData.stats.activeUsers}</h3>
+                <h3 className="text-3xl font-bold text-white mt-1">
+                  {stats.activeUsers[Object.keys(stats.activeUsers).pop() || '']}
+                </h3>
               </div>
               <Activity className="w-8 h-8 text-green-200" />
             </div>
@@ -62,7 +57,9 @@ export default function GlobalDashboard() {
             <div className="flex justify-between items-start">
               <div>
                 <p className="text-purple-200">Retos Completados</p>
-                <h3 className="text-3xl font-bold text-white mt-1">{mockData.stats.completed}</h3>
+                <h3 className="text-3xl font-bold text-white mt-1">
+                  {stats.challengesCompleted[Object.keys(stats.challengesCompleted).pop() || '']}
+                </h3>
               </div>
               <Trophy className="w-8 h-8 text-purple-200" />
             </div>
@@ -71,8 +68,12 @@ export default function GlobalDashboard() {
           <div className="bg-gradient-to-br from-red-600 to-red-700 p-6 rounded-2xl">
             <div className="flex justify-between items-start">
               <div>
-                <p className="text-red-200">Retos Activos</p>
-                <h3 className="text-3xl font-bold text-white mt-1">{mockData.stats.ongoing}</h3>
+                <p className="text-red-200">Participación Total</p>
+                <h3 className="text-3xl font-bold text-white mt-1">
+                  {Object.values(stats.activeParticipation).reduce((acc, curr) => 
+                    acc + curr.mind + curr.body + curr.spirit, 0
+                  )}
+                </h3>
               </div>
               <ArrowUp className="w-8 h-8 text-red-200" />
             </div>
@@ -84,7 +85,7 @@ export default function GlobalDashboard() {
             <h3 className="text-xl font-semibold text-white mb-6">Actividad Mensual</h3>
             <div className="h-80">
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={mockData.activityData}>
+                <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
                   <XAxis dataKey="month" stroke="#9CA3AF" />
                   <YAxis stroke="#9CA3AF" />
@@ -105,35 +106,30 @@ export default function GlobalDashboard() {
           </div>
 
           <div className="bg-background-card p-6 rounded-2xl border border-gray-800">
-            <h3 className="text-xl font-semibold text-white mb-6">Retos Destacados</h3>
+            <h3 className="text-xl font-semibold text-white mb-6">Distribución de Actividades</h3>
             <div className="space-y-4">
-              <div className="p-4 bg-blue-900/20 rounded-xl">
-                <div className="flex items-center gap-3">
-                  <Brain className="w-6 h-6 text-blue-400" />
-                  <div>
-                    <h4 className="font-medium text-white">Meditación Diaria</h4>
-                    <p className="text-sm text-gray-400">45 participantes</p>
+              {Object.entries(stats.activeParticipation).slice(-3).map(([month, data]) => (
+                <div key={month} className="p-4 bg-background-dark rounded-xl">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-gray-400">{month}</span>
+                    <span className="text-gray-400">Total: {data.mind + data.body + data.spirit}</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="text-center">
+                      <Brain className="w-6 h-6 text-blue-400 mx-auto mb-2" />
+                      <span className="text-blue-400">{data.mind}</span>
+                    </div>
+                    <div className="text-center">
+                      <Activity className="w-6 h-6 text-green-400 mx-auto mb-2" />
+                      <span className="text-green-400">{data.body}</span>
+                    </div>
+                    <div className="text-center">
+                      <Heart className="w-6 h-6 text-red-400 mx-auto mb-2" />
+                      <span className="text-red-400">{data.spirit}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-4 bg-green-900/20 rounded-xl">
-                <div className="flex items-center gap-3">
-                  <Activity className="w-6 h-6 text-green-400" />
-                  <div>
-                    <h4 className="font-medium text-white">Ejercicio Matutino</h4>
-                    <p className="text-sm text-gray-400">38 participantes</p>
-                  </div>
-                </div>
-              </div>
-              <div className="p-4 bg-red-900/20 rounded-xl">
-                <div className="flex items-center gap-3">
-                  <Heart className="w-6 h-6 text-red-400" />
-                  <div>
-                    <h4 className="font-medium text-white">Voluntariado</h4>
-                    <p className="text-sm text-gray-400">25 participantes</p>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>

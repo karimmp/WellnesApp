@@ -20,21 +20,26 @@ export default function Navbar() {
     menuItems.push({ href: "/admin/users", icon: <Shield className="w-6 h-6" />, label: "Admin" });
   }
 
+  // Rutas a ocultar en versión móvil
+  const hiddenOnMobile = ["/mind", "/spirit","/body", "/admin/users"];
+
   return (
     <>
       {/* Navbar móvil - bottom */}
       <nav className="md:hidden fixed bottom-0 w-full bg-background-darker border-t border-gray-800">
         <div className="flex justify-around py-2 px-4">
-          {menuItems.map((item) => (
-            <Link 
-              key={item.href}
-              href={item.href} 
-              className="flex flex-col items-center p-2 text-gray-400 hover:text-white"
-            >
-              {item.icon}
-              <span className="text-xs mt-1">{item.label}</span>
-            </Link>
-          ))}
+          {menuItems
+            .filter((item) => !hiddenOnMobile.includes(item.href))
+            .map((item) => (
+              <Link 
+                key={item.href}
+                href={item.href} 
+                className="flex flex-col items-center p-2 text-gray-400 hover:text-white"
+              >
+                {item.icon}
+                <span className="text-xs mt-1">{item.label}</span>
+              </Link>
+            ))}
         </div>
       </nav>
 
